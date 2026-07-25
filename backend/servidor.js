@@ -2,53 +2,89 @@
 // LMS IA - Servidor Backend
 // =====================================
 
-// Importar librerías
 const express = require("express");
 const cors = require("cors");
+
+// Importar conexión a base de datos
+const conexion = require("./conexion");
+
 
 // Crear aplicación
 const app = express();
 
-// Puerto del servidor
 const PORT = 3000;
 
+
 // Middlewares
+
 app.use(cors());
 app.use(express.json());
 
 
 // =====================================
-// Ruta de prueba
+// Ruta principal
 // =====================================
 
 app.get("/", (req, res) => {
+
     res.json({
         mensaje: "Servidor LMS IA funcionando correctamente 🚀"
     });
+
 });
 
 
 // =====================================
-// API Usuarios (base inicial)
+// API Usuarios
 // =====================================
 
 app.get("/usuarios", (req, res) => {
 
-    res.json({
-        mensaje: "Aquí estarán los usuarios del LMS"
+    const sql = "SELECT * FROM usuarios";
+
+    conexion.query(sql, (error, resultados) => {
+
+        if (error) {
+
+            res.status(500).json({
+                error: "Error al consultar usuarios",
+                detalle: error
+            });
+
+        } else {
+
+            res.json(resultados);
+
+        }
+
     });
 
 });
 
 
 // =====================================
-// API Cursos (base inicial)
+// API Cursos
 // =====================================
 
 app.get("/cursos", (req, res) => {
 
-    res.json({
-        mensaje: "Aquí estarán los cursos del LMS"
+    const sql = "SELECT * FROM cursos";
+
+    conexion.query(sql, (error, resultados) => {
+
+        if (error) {
+
+            res.status(500).json({
+                error: "Error al consultar cursos",
+                detalle: error
+            });
+
+        } else {
+
+            res.json(resultados);
+
+        }
+
     });
 
 });
