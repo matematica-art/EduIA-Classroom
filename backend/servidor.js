@@ -153,7 +153,28 @@ app.post("/usuarios", (req, res) => {
     );
 
 });
+app.get("/cursos", (req, res) => {
 
+    const sql = "SELECT * FROM cursos";
+
+    conexion.query(sql, (error, resultados) => {
+
+        if (error) {
+
+            res.status(500).json({
+                error: "Error al consultar cursos",
+                detalle: error
+            });
+
+        } else {
+
+            res.json(resultados);
+
+        }
+
+    });
+
+});
 // =====================================
 // Crear Curso
 // =====================================
