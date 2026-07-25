@@ -61,6 +61,58 @@ app.get("/usuarios", (req, res) => {
 
 });
 // =====================================
+// Login Usuarios
+// =====================================
+
+app.post("/login", (req, res) => {
+
+    const { correo, password } = req.body;
+
+
+    const sql = `
+        SELECT * FROM usuarios
+        WHERE correo = ? 
+        AND password = ?
+    `;
+
+
+    conexion.query(
+        sql,
+        [correo, password],
+        (error, resultados) => {
+
+
+            if (error) {
+
+                res.status(500).json({
+                    error: "Error en el servidor",
+                    detalle: error
+                });
+
+
+            } else if (resultados.length === 0) {
+
+                res.status(401).json({
+                    mensaje: "Correo o contraseña incorrectos"
+                });
+
+
+            } else {
+
+                res.json({
+                    mensaje: "Inicio de sesión correcto",
+                    usuario: resultados[0]
+                });
+
+            }
+
+
+        }
+    );
+
+
+});
+// =====================================
 // Registrar Usuario
 // =====================================
 
