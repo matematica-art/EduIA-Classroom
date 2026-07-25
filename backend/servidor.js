@@ -155,33 +155,46 @@ app.post("/usuarios", (req, res) => {
 });
 
 // =====================================
-// API Cursos
+// Crear Curso
 // =====================================
 
-app.get("/cursos", (req, res) => {
+app.post("/cursos", (req, res) => {
 
-    const sql = "SELECT * FROM cursos";
+    const { id_curso, nombre, descripcion } = req.body;
 
-    conexion.query(sql, (error, resultados) => {
 
-        if (error) {
+    const sql = `
+        INSERT INTO cursos
+        (id_curso, nombre, descripcion)
+        VALUES (?, ?, ?)
+    `;
 
-            res.status(500).json({
-                error: "Error al consultar cursos",
-                detalle: error
-            });
 
-        } else {
+    conexion.query(
+        sql,
+        [id_curso, nombre, descripcion],
+        (error, resultado) => {
 
-            res.json(resultados);
+            if (error) {
+
+                res.status(500).json({
+                    error: "No se pudo crear el curso",
+                    detalle: error
+                });
+
+            } else {
+
+                res.json({
+                    mensaje: "Curso creado correctamente",
+                    id: resultado.insertId
+                });
+
+            }
 
         }
-
-    });
+    );
 
 });
-
-
 // =====================================
 // Encender servidor
 // =====================================
