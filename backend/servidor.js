@@ -60,7 +60,47 @@ app.get("/usuarios", (req, res) => {
     });
 
 });
+// =====================================
+// Registrar Usuario
+// =====================================
 
+app.post("/usuarios", (req, res) => {
+
+    const { nombre, correo, password, rol } = req.body;
+
+
+    const sql = `
+        INSERT INTO usuarios 
+        (nombre, correo, password, rol)
+        VALUES (?, ?, ?, ?)
+    `;
+
+
+    conexion.query(
+        sql,
+        [nombre, correo, password, rol],
+        (error, resultado) => {
+
+            if (error) {
+
+                res.status(500).json({
+                    error: "No se pudo registrar el usuario",
+                    detalle: error
+                });
+
+            } else {
+
+                res.json({
+                    mensaje: "Usuario registrado correctamente",
+                    id: resultado.insertId
+                });
+
+            }
+
+        }
+    );
+
+});
 
 // =====================================
 // API Cursos
