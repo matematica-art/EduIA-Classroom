@@ -3,17 +3,23 @@
 // =====================================
 
 const mysql = require("mysql2");
+const dotenv = require("dotenv");
 
 
-// Configuración de conexión
+// Cargar variables de entorno
+
+dotenv.config();
+
+
+// Crear conexión
 
 const conexion = mysql.createConnection({
 
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "lms_ia",
-    port: 3306
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT
 
 });
 
